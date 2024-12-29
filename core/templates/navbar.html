@@ -14,7 +14,13 @@
             <a class="nav-link" href="#">Deposit</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="#">Borrowed Books</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="#">Profile</a>
+          </li>
+          <li class="nav-item">
+            <p>Welcome {{request.user.first_name}}, Balance: {{request.user.profile.balance}}</p>
           </li>
           {% else %}
 
@@ -22,7 +28,7 @@
             <a class="nav-link" href={% url "register" %}>Register</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Login</a>
+            <a class="nav-link" href={% url "login" %}>Login</a>
           </li>
           {% endif %}
         </ul>
