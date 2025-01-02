@@ -4,6 +4,8 @@ from authentication.models import Book, BorrowHistory
 from django.contrib.auth.decorators import login_required
 from authentication.forms import DepositForm
 from django.utils.timezone import now
+from django.core.mail import EmailMessage, EmailMultiAlternatives
+from django.template.loader import render_to_string
 # Create your views here.
 
 class HomeView(TemplateView):
@@ -29,6 +31,15 @@ def borrow_book(request, book_pk):
             BorrowHistory.objects.create(user=user, book=book, status='borrowed')
             book.available = False
             book.save()
+            mail_subject = "Borrow Email"
+            message = render_to_string('borrow_email.html', {
+                'user' : user,
+                'book' : book
+            })
+            to_email = user.email
+            send_email = EmailMultiAlternatives(mail_subject, '', to={to_email})
+            send_email.attach_alternative(message, "text/html")
+            send_email.send()
             return redirect('book-detail', pk=book_pk)  # Pass pk as argument to redirect
         else:
             message = 'Insufficient balance' if user_profile.deduct_balance(book.cost) == False else 'Book is not available for borrowing'
@@ -49,6 +60,15 @@ class DepositView(FormView):
         amount = form.cleaned_data['amount']
         user_profile = self.request.user.profile
         user_profile.deposit(amount)
+        mail_subject = "Deposit Email"
+        message = render_to_string('success_email.html', {
+            'user' : self.request.user,
+            'amount' : amount
+        })
+        to_email = self.request.user.email
+        send_email = EmailMultiAlternatives(mail_subject, '', to={to_email})
+        send_email.attach_alternative(message, "text/html")
+        send_email.send()
         return redirect('home')
     
 @login_required
