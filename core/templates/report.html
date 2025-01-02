@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Borrow History Report</h2>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>Book Title</th>
+                <th>Borrow Date</th>
+                <th>Return Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in borrow_history %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ entry.user.username }}</td>
+                <td>{{ entry.book.title }}</td>
+                <td>{{ entry.borrow_date|date:"Y-m-d H:i" }}</td>
+                <td>{{ entry.return_date|date:"Y-m-d H:i" }}</td>
+                <td>{{ entry.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -5,7 +5,8 @@ from .forms import RegistrationForm
 from .models import UserProfile
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView 
+from django.contrib.auth import logout 
 # Create your views here.
 
 class RegistrationView(CreateView):
@@ -32,6 +33,8 @@ class UserLoginView(LoginView):
         context = super().get_context_data(**kwargs)
         context['type'] = 'Login'
         return context
-
+def user_logout(request):
+    logout(request)  # Logs out the user
+    return redirect('home') 
 
 

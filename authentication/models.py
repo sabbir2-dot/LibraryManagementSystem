@@ -11,9 +11,14 @@ class UserProfile(models.Model):
         self.balance += amount
         self.save()
     
-    def deduct_balance(self,amount):
-        self.balance -= amount
-        self.save()
+    def deduct_balance(self, amount):
+        if self.balance >= amount:
+            self.balance -= amount
+            self.save()
+            return True
+        else:
+            return False
+
     
 class Book(models.Model):
     title = models.CharField(max_length=255)

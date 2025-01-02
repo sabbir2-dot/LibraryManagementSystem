@@ -9,4 +9,7 @@ class RegistrationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
-        
+
+class DepositForm(forms.Form):
+    amount = forms.DecimalField(max_digits=20, decimal_places=2)
+            

@@ -9,7 +9,10 @@
           <p class="card-text">{{book.cost}}.</p>
           <p class="card-text">{{book.author}}.</p>
           {% if request.user.is_authenticated %}
-          <a href="#" class="text-decoration-none text-dark btn btn-danger">Borrow Now</a>          
+          <form action="{% url 'borrow-book' book.pk %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Borrow Now</button>
+          </form>
           {% endif %}
       </div>
     </div>
